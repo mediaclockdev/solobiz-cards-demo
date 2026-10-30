@@ -195,8 +195,17 @@ export async function verifyEmail(
  * hands the oobCode back to our /reset-password (solobizcard Onboarding.tsx,
  * the same hand-off it does for verification links).
  */
-export async function resetPassword(email: string): Promise<void> {
-  const snapshot = await getDocs(query(collection(db, 'users'), where('email', '==', email)));
+export async function resetPassword(rawEmail: string): Promise<void> {
+  const email = rawEmail.trim();
+  // Profiles made here store the address as Firebase Auth returns it, which
+  // is lowercased; the dashboard's SignUpModal stores it as the user typed it.
+  // Firestore matches exactly, so try the lowercased form, then as typed.
+  let snapshot = await getDocs(
+    query(collection(db, 'users'), where('email', '==', email.toLowerCase())),
+  );
+  if (snapshot.empty && email !== email.toLowerCase()) {
+    snapshot = await getDocs(query(collection(db, 'users'), where('email', '==', email)));
+  }
   if (snapshot.empty) {
     throw new Error('No user found with this email.');
   }
