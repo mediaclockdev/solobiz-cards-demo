@@ -156,7 +156,7 @@ function OnboardingContent() {
         </div>
 
         <Card className={cn("w-full max-w-md shadow-xl", (step === 2 || step === 3) && "bg-transparent border-none shadow-none")}>
-          <CardContent className="pt-6 px-0 sm:px-6">
+          <CardContent className={cn("pt-6 sm:px-6", step === 1 ? "px-6" : "px-0")}>
             {step === 1 ? (
               <div className="space-y-6">
                 <div className="space-y-2">
