@@ -1,0 +1,28 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero-image",
+      "description": "Woman holding 'solo' card",
+      "imageUrl": "/solo-landing.png",
+      "imageHint": "woman business card"
+    },
+    {
+      "id": "jane-doeington-avatar",
+      "description": "Avatar for Jane Doeington",
+      "imageUrl": "https://images.unsplash.com/photo-1629122878149-97f90d044e3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx3aXphcmQlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzA3Mjg0NDh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "wizard portrait"
+    },
+    {
+      "id": "map-header",
+      "description": "Map background for business card",
+      "imageUrl": "https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000",
+      "imageHint": "city map"
+    },
+    {
+      "id": "rob-buc-avatar",
+      "description": "Avatar for Rob Buc",
+      "imageUrl": "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=1000",
+      "imageHint": "woman portrait"
+    }
+  ]
+}
