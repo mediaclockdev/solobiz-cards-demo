@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { adminAuth } from '@/services/firebaseAdmin';
+import type { Auth } from 'firebase-admin/auth';
+import { getAdminAuth } from '@/services/firebaseAdmin';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,12 +10,21 @@ export const dynamic = 'force-dynamic';
  * is that user, so nobody can mint a token for someone else's uid.
  */
 export async function POST(req: Request) {
-  try {
-    const { idToken } = await req.json();
-    if (!idToken) {
-      return NextResponse.json({ error: 'idToken is required' }, { status: 400 });
-    }
+  const { idToken } = await req.json().catch(() => ({}));
+  if (!idToken) {
+    return NextResponse.json({ error: 'idToken is required' }, { status: 400 });
+  }
 
+  let adminAuth: Auth;
+  try {
+    adminAuth = await getAdminAuth();
+  } catch (error) {
+    // A server problem, not the caller's: keep it out of the 401 below.
+    console.error('Firebase Admin initialisation failed:', error);
+    return NextResponse.json({ error: 'Server is not configured' }, { status: 500 });
+  }
+
+  try {
     const { uid } = await adminAuth.verifyIdToken(idToken);
     const token = await adminAuth.createCustomToken(uid);
     return NextResponse.json({ token });

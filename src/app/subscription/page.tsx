@@ -23,7 +23,7 @@ export default function SubscriptionPolicyPage() {
         <p className="font-bold mb-2">Duration and Terms</p>
         <p className="mb-4">The duration and specific terms of the trial will be clearly stated at the time of sign-up.</p>
         <p className="font-bold mb-2">End of Trial</p>
-        <p className="mb-4">Subscribers will be automatically enrolled in the chosen subscription plan at the end of the trial period, unless they cancel prior to the trial's expiration.</p>
+        <p className="mb-4">Subscribers will be automatically enrolled in the chosen subscription plan at the end of the trial period, unless they cancel prior to the trial&apos;s expiration.</p>
 
         <h2 className="text-lg font-bold mb-2">Subscription Refunds</h2>
         <p className="font-bold mb-2">No Refunds Policy</p>
@@ -39,7 +39,7 @@ export default function SubscriptionPolicyPage() {
         <p className="font-bold mb-2">Notification of Renewal</p>
         <p className="mb-4">We will send an email reminder prior to renewal, giving you ample time to decide if you wish to continue, change, or cancel your subscription.</p>
         <p className="font-bold mb-2">Opting Out of Auto-Renewal</p>
-        <p className="mb-4">You can opt out of auto-renewal by following the cancellation process outlined in the "Canceling a Subscription" section.</p>
+        <p className="mb-4">You can opt out of auto-renewal by following the cancellation process outlined in the &quot;Canceling a Subscription&quot; section.</p>
 
         <h2 className="text-lg font-bold mb-2">Changing Subscription Fees</h2>
         <p className="font-bold mb-2">Notification of Price Changes</p>

@@ -37,6 +37,7 @@ import {
   Music,
   Calendar,
   ChevronRight,
+  type LucideIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -165,7 +166,7 @@ function UpgradePopup({ open, onOpenChange }: { open: boolean, onOpenChange: (op
             <div className="flex items-center gap-2 px-2">
               <Checkbox id="dont-ask" className="rounded-sm border-slate-200" />
               <label htmlFor="dont-ask" className="text-xs font-bold text-slate-400">
-                Don't ask me again
+                Don&apos;t ask me again
               </label>
             </div>
 
@@ -220,7 +221,7 @@ export default function AddContent2Page() {
     c.code.includes(searchQuery)
   );
 
-  const ContentItem = ({ icon: Icon, label, colorClass, isCustom = false, svg, isPremium = false }: { icon?: any, label: string, colorClass: string, isCustom?: boolean, svg?: React.ReactNode, isPremium?: boolean }) => (
+  const ContentItem = ({ icon: Icon, label, colorClass, isCustom = false, svg, isPremium = false }: { icon?: LucideIcon, label: string, colorClass: string, isCustom?: boolean, svg?: React.ReactNode, isPremium?: boolean }) => (
     <div 
       className="relative flex flex-col items-center justify-center p-2 bg-white rounded-xl border border-slate-100 shadow-sm w-full h-[84px] transition-all hover:scale-105 active:scale-95 cursor-pointer hover:border-slate-200"
       onClick={() => {

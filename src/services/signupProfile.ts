@@ -63,7 +63,14 @@ const getIpAddress = async () => {
   }
 };
 
-const getAccurateLocation = async () => {
+type Coordinates = {
+  latitude: number;
+  longitude: number;
+  accuracy?: number | null;
+  source?: string;
+};
+
+const getAccurateLocation = async (): Promise<Coordinates> => {
   try {
     // 1️⃣ Try Google Geolocation API first
     const googleKey = process.env.NEXT_GOOGLE_API_KEY;
@@ -97,7 +104,7 @@ const getAccurateLocation = async () => {
     console.warn("Google API did not return valid location, falling back...");
 
     // 2️⃣ Fallback to Browser Geolocation
-    return new Promise((resolve, reject) => {
+    return new Promise<Coordinates>((resolve, reject) => {
       if (!navigator.geolocation) {
         reject("Geolocation not supported");
         return;
@@ -199,8 +206,8 @@ async function dispatchVerificationEmail(
         ? { url: verifyContinueUrl, handleCodeInApp: false }
         : undefined,
     );
-  } catch (sdkErr: any) {
-    if (sdkErr?.code === "auth/unauthorized-continue-uri") {
+  } catch (sdkErr) {
+    if ((sdkErr as { code?: string })?.code === "auth/unauthorized-continue-uri") {
       console.warn("Domain not allowlisted for continueUrl; sending verification email without continueUrl.");
       try {
         await sendEmailVerification(user);
@@ -250,12 +257,12 @@ export async function completeSignupProfile({
   let grandParentUid: string | null = null;
   const childIp = await getIpAddress();
 
-  let browserLocation: any = null;
+  let browserLocation: Coordinates | null = null;
 
   try {
     // Try normal browser-based geolocation first
     browserLocation = await getBrowserLocation();
-    console.log("browserLocation", location);
+    console.log("browserLocation", browserLocation);
   } catch (err) {
     console.warn("Primary location failed or denied:", err);
 
@@ -279,7 +286,7 @@ export async function completeSignupProfile({
   const membershipSettingsRef = doc(db, "settings", "ReferralMembershipLevel");
   const membershipSnap = await getDoc(membershipSettingsRef);
 
-  let membershipData: any = {};
+  let membershipData: Record<string, unknown> = {};
   if (membershipSnap.exists()) {
     const data = membershipSnap.data();
     membershipData = {
@@ -413,7 +420,11 @@ export async function completeSignupProfile({
   const earningSettingsRef = doc(db, "settings", "ReferralEarningRate");
   const earningshipSnap = await getDoc(earningSettingsRef);
 
-  let earningshipData: any = {};
+  let earningshipData: {
+    childEarnings1: number;
+    grandchildEarnings1: number;
+    operatingCostRate1: number;
+  };
   if (earningshipSnap.exists()) {
     const data = earningshipSnap.data();
 
@@ -433,7 +444,7 @@ export async function completeSignupProfile({
   const trialSettingsRef = doc(db, "settings", "PricingRequirement");
   const trialshipSnap = await getDoc(trialSettingsRef);
 
-  let trialhipData: any = {};
+  let trialhipData: { freeTrialPeriod: number };
   if (trialshipSnap.exists()) {
     const data = trialshipSnap.data();
 

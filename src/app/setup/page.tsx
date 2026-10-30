@@ -49,7 +49,8 @@ import {
   Trash2,
   Lock,
   Smartphone,
-  ChevronRight
+  ChevronRight,
+  type LucideIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -187,7 +188,7 @@ function UpgradePopup({ open, onOpenChange }: { open: boolean, onOpenChange: (op
             <div className="flex items-center gap-2 px-2">
               <Checkbox id="dont-ask" className="rounded-sm border-slate-200" />
               <label htmlFor="dont-ask" className="text-xs font-bold text-slate-400">
-                Don't ask me again
+                Don&apos;t ask me again
               </label>
             </div>
 
@@ -365,6 +366,7 @@ export default function SetupPage() {
   const [textContent, setTextContent] = useState('');
   const [showAllContactInfo, setShowAllContactInfo] = useState(false);
   const [showAllSocialLinks, setShowAllSocialLinks] = useState(false);
+  const [showAllProductivityLinks, setShowAllProductivityLinks] = useState(false);
   
   const [bioData, setBioData] = useState({
     firstName: 'rob',
@@ -466,7 +468,7 @@ export default function SetupPage() {
     </div>
   );
 
-  const ContentItem = ({ icon: Icon, label, colorClass, isCustom = false, svg, isPremium = false }: { icon?: any, label: string, colorClass: string, isCustom?: boolean, svg?: React.ReactNode, isPremium?: boolean }) => (
+  const ContentItem = ({ icon: Icon, label, colorClass, isCustom = false, svg, isPremium = false }: { icon?: LucideIcon, label: string, colorClass: string, isCustom?: boolean, svg?: React.ReactNode, isPremium?: boolean }) => (
     <div 
       className="flex items-center justify-between p-3 bg-white rounded-[20px] border shadow-sm mb-2 cursor-pointer hover:bg-slate-50 transition-colors"
       onClick={() => {
@@ -477,7 +479,7 @@ export default function SetupPage() {
     >
       <div className="flex items-center gap-3">
         <div className={cn("w-9 h-9 rounded-xl flex items-center justify-center text-white", colorClass)}>
-          {isCustom ? svg : <Icon className="h-5 w-5" />}
+          {isCustom ? svg : Icon && <Icon className="h-5 w-5" />}
         </div>
         <div className="flex items-center gap-1.5">
           <span className="text-sm font-bold text-slate-900">{label}</span>
@@ -492,7 +494,7 @@ export default function SetupPage() {
     </div>
   );
 
-  const ProfileContentRow = ({ icon: Icon, label, value, colorClass, onDragStart, onDragOver, onDrop, index }: { icon: any, label: string, value: string, colorClass: string, onDragStart: (e: React.DragEvent) => void, onDragOver: (e: React.DragEvent) => void, onDrop: (e: React.DragEvent) => void, index: number }) => (
+  const ProfileContentRow = ({ icon: Icon, label, value, colorClass, onDragStart, onDragOver, onDrop, index }: { icon: LucideIcon, label: string, value: string, colorClass: string, onDragStart: (e: React.DragEvent) => void, onDragOver: (e: React.DragEvent) => void, onDrop: (e: React.DragEvent) => void, index: number }) => (
     <div 
       className="flex items-center gap-3 p-3 bg-white rounded-[20px] border shadow-sm mb-2 group transition-all"
       onDragOver={onDragOver}
@@ -967,10 +969,10 @@ export default function SetupPage() {
             )}
 
             <button 
-              onClick={() => setShowAllSocialLinks(!showAllSocialLinks)}
+              onClick={() => setShowAllProductivityLinks(!showAllProductivityLinks)}
               className="flex items-center gap-1 text-[10px] font-bold text-slate-400 px-4 py-2 hover:text-slate-600 transition-colors"
             >
-              {showAllSocialLinks ? (
+              {showAllProductivityLinks ? (
                 <>Show less <ChevronUp className="h-3 w-3" /></>
               ) : (
                 <>Show more <ChevronDown className="h-3 w-3" /></>
@@ -1056,7 +1058,7 @@ export default function SetupPage() {
         </div>
 
         <div className="pt-2">
-          <Tabs defaultValue="all" className="w-full" onValueChange={(val) => setSetupTab(val as any)}>
+          <Tabs defaultValue="all" className="w-full" onValueChange={(val) => setSetupTab(val as typeof setupTab)}>
             <TabsList className="grid w-full grid-cols-3 bg-slate-100 h-auto p-1 rounded-full">
               <TabsTrigger 
                 value="profile" 
@@ -1331,7 +1333,7 @@ export default function SetupPage() {
                     <Button
                       key={t.id}
                       variant={selectedTheme === t.id ? 'default' : 'outline'}
-                      onClick={() => setSelectedTheme(t.id as any)}
+                      onClick={() => setSelectedTheme(t.id as typeof selectedTheme)}
                       className={cn(
                         "h-12 rounded-full text-xs font-black transition-transform active:scale-95",
                         selectedTheme === t.id ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-400 border-slate-100"
@@ -1462,12 +1464,3 @@ export default function SetupPage() {
   );
 }
 
-function BioFieldEdit({ label, fieldKey, placeholder }: { label: string, fieldKey: keyof typeof bioData, placeholder: string }) {
-  // Logic is handled inline above.
-  return null; 
-}
-
-function BioFieldRead({ label, value }: { label: string, value: string }) {
-  // Logic is handled inline above.
-  return null;
-}
