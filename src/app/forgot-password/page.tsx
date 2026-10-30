@@ -13,7 +13,6 @@ import { friendlyAuthError, resetPassword } from '@/lib/auth/session';
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [isSending, setIsSending] = useState(false);
-  console.log('isSending:', isSending);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
@@ -25,7 +24,7 @@ export default function ForgotPasswordPage() {
     setIsSending(true);
     try {
       await resetPassword(email.trim());
-      setMessage('If an account exists for that email, a reset link is on its way. Check your spam folder too.');
+      setMessage('Password reset link sent to your email! Check your spam folder too.');
     } catch (err) {
       setError(friendlyAuthError(err, 'Could not send the reset email. Please try again.'));
     } finally {
@@ -44,7 +43,7 @@ export default function ForgotPasswordPage() {
       <form onSubmit={handleSubmit} className="flex-1 flex flex-col items-center pt-8 px-4 bg-accent">
         <div className="w-full max-w-md relative mb-8">
           <Link href="/login" className="absolute left-0 top-1/2 -translate-y-1/2 text-muted-foreground">
-            <Button variant="ghost" size="icon" className="rounded-full bg-background hover:bg-background/80">
+            <Button type="button" variant="ghost" size="icon" className="rounded-full bg-background hover:bg-background/80">
               <ArrowLeft className="h-8 w-8" />
             </Button>
           </Link>

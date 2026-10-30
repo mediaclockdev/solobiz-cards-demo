@@ -21,6 +21,7 @@ function LoginContent() {
   const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isVerified, setIsVerified] = useState(searchParams.get('verified') === 'true');
+  const isPasswordReset = searchParams.get('reset') === 'true';
   const handledOobRef = useRef(false);
 
   // Verification links can land here directly when Firebase forwards them.
@@ -110,6 +111,13 @@ function LoginContent() {
           <div className="w-full max-w-md mb-4 rounded-lg border border-emerald-200 bg-[#f0fff9] p-3 text-sm text-emerald-800 flex items-center justify-center gap-2">
             <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
             Email verified! Please log in to your account.
+          </div>
+        )}
+
+        {isPasswordReset && (
+          <div className="w-full max-w-md mb-4 rounded-lg border border-emerald-200 bg-[#f0fff9] p-3 text-sm text-emerald-800 flex items-center justify-center gap-2">
+            <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
+            Password updated! Log in with your new password.
           </div>
         )}
 

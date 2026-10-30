@@ -16,6 +16,8 @@ function LinkHandler() {
     storeReferralCode(searchParams.get('ref'));
     if (searchParams.get('mode') === 'verifyEmail' && searchParams.get('oobCode')) {
       router.replace(`/verify-email?${searchParams.toString()}`);
+    } else if (searchParams.get('mode') === 'resetPassword' && searchParams.get('oobCode')) {
+      router.replace(`/reset-password?${searchParams.toString()}`);
     }
   }, [searchParams, router]);
 

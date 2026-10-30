@@ -3,11 +3,13 @@
 import {
   applyActionCode,
   checkActionCode,
+  confirmPasswordReset,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
   User,
+  verifyPasswordResetCode,
 } from 'firebase/auth';
 import {
   collection,
@@ -184,16 +186,74 @@ export async function verifyEmail(
   }
 }
 
+/**
+ * Sends Firebase's password-reset email, with the same checks as the
+ * dashboard's ForgotPasswordModal: the account must exist and be verified.
+ *
+ * Every reset link for the project opens on dash.solobizcards.com, its action
+ * handler. The continueUrl below tells it the link came from this site, and it
+ * hands the oobCode back to our /reset-password (solobizcard Onboarding.tsx,
+ * the same hand-off it does for verification links).
+ */
 export async function resetPassword(email: string): Promise<void> {
+  const snapshot = await getDocs(query(collection(db, 'users'), where('email', '==', email)));
+  if (snapshot.empty) {
+    throw new Error('No user found with this email.');
+  }
+  if (!snapshot.docs[0].data()?.isVerify) {
+    throw new Error('Please verify your email!');
+  }
+
   await sendPasswordResetEmail(auth, email, {
     url: `${window.location.origin}/login`,
   }).catch(async (error) => {
+    // Domain not on Firebase's authorized list: the link still works, but
+    // opens the dashboard's own reset form instead of coming back here.
     if ((error as { code?: string })?.code === 'auth/unauthorized-continue-uri') {
       await sendPasswordResetEmail(auth, email);
     } else {
       throw error;
     }
   });
+}
+
+/** Checks a reset link before showing the form; resolves to its account's email. */
+export async function checkResetCode(
+  oobCode: string,
+): Promise<{ success: true; email: string } | { success: false; error: string }> {
+  try {
+    return { success: true, email: await verifyPasswordResetCode(auth, oobCode) };
+  } catch (error) {
+    return { success: false, error: resetLinkError(error) };
+  }
+}
+
+/** Sets the new password; the reset code is spent once this succeeds. */
+export async function confirmNewPassword(
+  oobCode: string,
+  newPassword: string,
+): Promise<{ success: true } | { success: false; error: string }> {
+  try {
+    await confirmPasswordReset(auth, oobCode, newPassword);
+    return { success: true };
+  } catch (error) {
+    const code = (error as { code?: string })?.code;
+    if (code === 'auth/weak-password' || code === 'auth/password-does-not-meet-requirements') {
+      return { success: false, error: 'That password is too weak. Please choose a stronger one.' };
+    }
+    return { success: false, error: resetLinkError(error) };
+  }
+}
+
+function resetLinkError(error: unknown): string {
+  const code = (error as { code?: string })?.code || '';
+  if (code === 'auth/expired-action-code' || code === 'auth/invalid-action-code') {
+    return 'This reset link has expired or has already been used. Please request a new one.';
+  }
+  if (code === 'auth/user-disabled' || code === 'auth/user-not-found') {
+    return 'This account is not available. Please contact support.';
+  }
+  return friendlyAuthError(error, 'Could not reset your password. Please try again.');
 }
 
 /** Sign the current user into dash.solobizcards.com and go there. */
