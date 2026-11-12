@@ -188,7 +188,7 @@ function OnboardingContent() {
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, category: cat }))}
                     className={cn(
-                      "px-4 py-1.5 rounded-full text-[10px] font-medium border transition-all duration-200",
+                      "px-4 py-1.5 rounded-full text-xs sm:text-[10px] font-medium border transition-all duration-200",
                       formData.category === cat
                         ? "bg-primary text-primary-foreground border-primary shadow-sm"
                         : "bg-background text-foreground border-input hover:border-muted-foreground hover:bg-accent"
@@ -250,7 +250,7 @@ function OnboardingContent() {
           <Link href="/terms" className="text-xs text-muted-foreground">Terms</Link>
           <Link href="/privacy" className="text-xs text-muted-foreground">Privacy</Link>
           <Link href="/subscription" className="text-xs text-muted-foreground">Subscription</Link>
-          <a href="#" className="text-xs text-muted-foreground">Help</a>
+          <Link href="/help" className="text-xs text-muted-foreground">Help</Link>
           <a href="#" className="text-xs text-muted-foreground">Shop</a>
         </nav>
       </footer>

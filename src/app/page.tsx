@@ -125,9 +125,9 @@ export default function Home() {
           <Link href="/subscription" className="text-[10px] no-underline hover:no-underline underline-offset-4 text-muted-foreground">
             Subscription
           </Link>
-          <a href="https://www.solobizcards.com/support" target="_blank" rel="noopener noreferrer" className="text-[10px] no-underline hover:no-underline underline-offset-4 text-muted-foreground">
+          <Link href="/help" className="text-[10px] no-underline hover:no-underline underline-offset-4 text-muted-foreground">
             Help
-          </a>
+          </Link>
           <a href="https://www.solobizcards.com/accessories" target="_blank" rel="noopener noreferrer" className="text-[10px] no-underline hover:no-underline underline-offset-4 text-muted-foreground">
             Shop
           </a>

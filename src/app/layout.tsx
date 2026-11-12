@@ -19,7 +19,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased bg-card flex items-center justify-center min-h-screen">
-        <div style={{ width: '500px' }} className="bg-background overflow-auto">
+        <div className="w-full max-w-[500px] bg-background min-h-screen flex flex-col shadow-sm overflow-x-hidden">
           {children}
         </div>
       </body>
